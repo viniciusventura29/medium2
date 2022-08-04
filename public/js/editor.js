@@ -23,8 +23,8 @@ const uploadImage = (uploadFile, uploadType) => {
       method: "post",
       body: formdata,
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (uploadType == "image") {
           addImage(data, file.name);
         } else {
@@ -32,6 +32,8 @@ const uploadImage = (uploadFile, uploadType) => {
           banner.style.backgroundImage = `url("${bannerPath}")`;
         }
       });
+  } else {
+    alert("upload images only");
   }
 };
 
@@ -43,3 +45,33 @@ const addImage = (imagepath, alt) => {
     textToInsert +
     articleField.value.slice(curPos);
 };
+
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov","Dec"];
+
+publishBtn.addEventListener("click", () => {
+  if (articleField.value.length && blogTitleField.value.length) {
+    let letters = "abcdefghijklmnopqrstuvwxyz";
+    let blogTitle = blogTitleField.value.split("").join("-");
+    let id = "";
+    for (let i = 0; i < 4; i++) {
+      id += letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    let docName = `${blogTitle}-${id}`;
+    let date = new Date();
+
+    db.collection("blogs")
+      .doc(docName)
+      .set({
+        title: blogTitle.value,
+        article: articleField.value,
+        bannerImage: bannerPath,
+        publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+      })
+      .then(()=>{
+        console.log("date entered");
+      })
+      .catch((err) => {
+        console.error(err);
+  });
+}});

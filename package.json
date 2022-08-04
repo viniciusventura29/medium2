@@ -4,13 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start":"nodemon server.js"
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express-fileupload": "^1.4.0",
     "express.js": "^1.0.0",
+    "firebase": "^9.9.1",
     "nodemon": "^2.0.19"
   }
 }
