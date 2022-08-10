@@ -13,6 +13,10 @@ bannerImage.addEventListener("change", () => {
   uploadImage(bannerImage, "banner");
 });
 
+uploadInput.addEventListener("change", () => {
+  uploadImage(uploadInput, "image");
+});
+
 const uploadImage = (uploadFile, uploadType) => {
   const [file] = uploadFile.files;
   if (file && file.type.includes("image")) {
@@ -46,13 +50,27 @@ const addImage = (imagepath, alt) => {
     articleField.value.slice(curPos);
 };
 
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov","Dec"];
+let months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 publishBtn.addEventListener("click", () => {
+  console.log(blogTitleField.value);
   if (articleField.value.length && blogTitleField.value.length) {
     let letters = "abcdefghijklmnopqrstuvwxyz";
-    let blogTitle = blogTitleField.value.split("").join("-");
-    let id = "";
+    let blogTitle = blogTitleField.value.split(" ").join("-");
+    let id = '';
     for (let i = 0; i < 4; i++) {
       id += letters[Math.floor(Math.random() * letters.length)];
     }
@@ -60,18 +78,19 @@ publishBtn.addEventListener("click", () => {
     let docName = `${blogTitle}-${id}`;
     let date = new Date();
 
-    db.collection("blogs")
-      .doc(docName)
-      .set({
-        title: blogTitle.value,
+    db.collection("blogs").doc(docName).set({
+        title: blogTitleField.value,
         article: articleField.value,
         bannerImage: bannerPath,
-        publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+        publishedAt: `${date.getDate()} ${
+          months[date.getMonth()]
+        } ${date.getFullYear()}`,
       })
-      .then(()=>{
-        console.log("date entered");
+      .then(() => {
+        location.href=`/${docName}`;
       })
       .catch((err) => {
         console.error(err);
-  });
-}});
+      });
+  }
+});
